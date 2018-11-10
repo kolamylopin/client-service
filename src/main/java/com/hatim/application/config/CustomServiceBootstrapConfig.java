@@ -1,6 +1,7 @@
 package com.hatim.application.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.config.client.ConfigServicePropertySourceLocator;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,9 @@ import java.net.URI;
 @ConditionalOnClass({ConfigServicePropertySourceLocator.class, RestTemplate.class})
 public class CustomServiceBootstrapConfig {
     private final ConfigServicePropertySourceLocator locator;
+
+    @Value("${config-service}")
+    private String configService;
 
     @Autowired
     public CustomServiceBootstrapConfig(ConfigServicePropertySourceLocator locator) {
@@ -30,7 +34,8 @@ public class CustomServiceBootstrapConfig {
     private class CustomUriTemplateHandler extends DefaultUriBuilderFactory {
         @Override
         public URI expand(String uriTemplate, Object... uriVars) {
-            String configUriTemplate = uriTemplate.replaceAll(":[\\d]+\\/\\/", "$0config-service/");
+            String configUriTemplate = uriTemplate.
+                    replaceAll(":[\\d]+\\/\\/", "$0" + configService + "/");
             return super.expand(configUriTemplate, uriVars);
         }
     }
