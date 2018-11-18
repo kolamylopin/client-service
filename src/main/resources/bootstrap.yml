@@ -6,8 +6,8 @@ spring:
       discovery:
         enabled: true
         service-id: config-service
-      username: user
-      password: userPass
+      username: ${config.username}
+      password: ${config.password}
       fail-fast: true
   profiles:
     active: dev
