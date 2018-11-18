@@ -9,8 +9,6 @@ spring:
       username: ${config.username}
       password: ${config.password}
       fail-fast: true
-  profiles:
-    active: dev
 server:
   port: 8080
 eureka:
